@@ -448,6 +448,7 @@ a{
     margin: auto;
     width: 400px;
     align-items: center;
+    margin-top: 20px;
 }
 
 .h2Reserva{
@@ -526,6 +527,8 @@ a{
     width: 325px;  
     padding-top: 100px;
     cursor: pointer;
+    margin-top: 150px;
+    margin-left: 1130px;
 }
 
 li{

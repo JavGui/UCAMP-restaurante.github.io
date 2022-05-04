@@ -1,6 +1,6 @@
-import db from '../firebase';
-import { Link } from 'react-router-dom';
+import db from './firebase';
 import React, { useState, Fragment, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { collection, getDocs, addDoc} from "firebase/firestore/lite";
 
 const Reservaciones = () => 
@@ -37,34 +37,25 @@ const Reservaciones = () =>
     
 
     async function LeerFirebase(db){
-        console.log("Entro a leer firebase");
         const coleccion = collection(db, 'reservaciones');
         const documentosSnapshot = await getDocs(coleccion);
         const contenido = documentosSnapshot.docs.map((doc) => doc.data());
         setEstado(contenido);
-        console.log(estado);
-        console.log("Salgo de firebase");
     }
 
     // ********** VALIDA FORMULARIO **********
 
     async function ValidaFormulario() 
     {
-        console.log("Entré a ValidaFormulario");
-
-        console.log("Campos de entrada: ", fecha, numero, nombre, apPaterno, apMaterno, telefono, correo);
-
         if (fecha === "" || numero ==="" || nombre ==="" || apPaterno ==="" || apMaterno ==="" || telefono ==="" || correo ==="" )
         {
-            console.log("Datos Obligatorios Vacíos");
             setCorrecta(false);
             setError(false);
             setInvalida(false);
             setDatos(true);
-            console.log("Salgo de validaFormulario");
             return;
         }           
-
+       
         let dia = fecha.substr(8, 2);  // tolocaldatetime.string
         let mes = fecha.substr(5, 2);
         let año = fecha.substr(0, 4);
@@ -75,15 +66,10 @@ const Reservaciones = () =>
         setFechaValida(armaFecha);
         setHoraValida(armaHora);
 
-        console.log("fechaConvertida: ", armaFecha);
-        console.log("horaConvertida: ", armaHora);
 
         if( !estado || estado.length === null || estado.length === 0)
         { 
-            console.log("Sin datos en FireBase");
-            console.log(armaFecha, armaHora, numero, nombre, apPaterno, apMaterno, telefono, correo);
             if (armaFecha !== "" && armaHora !== "" && numero !=="" && nombre !=="" && apPaterno !=="" && apMaterno !=="" && telefono !=="" && correo !=="" ){
-                console.log("Se manda a GrabaReservacion desde sin datos")
                 let resultado = GrabaReservacion(armaFecha, armaHora, numero, nombre, apPaterno, apMaterno, telefono, correo);
                 if( resultado )
                     { 
@@ -92,8 +78,6 @@ const Reservaciones = () =>
                         setInvalida(false);
                         setDatos(false);
                         setFecha("");
-                        console.log(fecha);
-                        console.log("Regreso de GrabaReservacion correcta, sin datos en firebase");
                     }
                     else
                     { 
@@ -102,50 +86,31 @@ const Reservaciones = () =>
                         setInvalida(false);
                         setDatos(false);
                         setFecha(""); 
-                        console.log("Regreso de GrabaReservacion incorrecta, sin datos en firebase");
                     }
-                console.log("Regreso de GrabaReservacion")
             }
 
-            console.log("Salgo de ValidaFormulario desde sin datos");                 
             return;
         } 
         else
         {    
             let existeReserva = false;
-            console.log("existeReserva: ", existeReserva);
-            console.log("Sin hay datos en FireBase");
-            console.log(estado.length);
-            console.log("Datos: ", armaFecha, armaHora);            
+                  
             await estado.map((doc) => 
             {            
-                console.log("Entro al map de estado");
-                console.log("Datos: ", armaFecha, armaHora);
-                console.log("Base: ", doc.fechaValida, doc.horaValida);
-                
                 if (doc.fecha === armaFecha && doc.hora === armaHora){
-                    console.log("Entro al then dal Map de estado, ya existe la reserva");
                     existeReserva = true;
-                    console.log("existeReserva1: ", existeReserva);
                     setCorrecta(false);
                     setError(false);
                     setInvalida(true);
                     setDatos(false);
                     setFecha(""); 
-                    console.log(fecha);
-                    console.log("Salgo del map de estado, ya existe la reserva");
                 }
                 return existeReserva;
             })
 
-            console.log(invalida);
-            console.log("existeReserva2: ", existeReserva);
             if(existeReserva === false){
-                console.log("No existe la reserva");
-            
                 if (armaFecha !== "" && armaHora !=="" && numero !==""&& nombre !=="" && apPaterno !=="" && apMaterno !=="" && telefono !=="" && correo !=="" )
                 {
-                    console.log("Se manda a GrabaReservacion, no existe reserva"); 
                     let resultado = GrabaReservacion(armaFecha, armaHora, numero, nombre, apPaterno, apMaterno, telefono, correo);
                     if( resultado )
                     { 
@@ -154,13 +119,10 @@ const Reservaciones = () =>
                         setInvalida(false);
                         setDatos(false);
                         setFecha("");
-                        console.log(fecha);
-                        console.log("Regreso de GrabaReservacion correcta, no existe reserva");
                     }
                     else
                     { 
                         setError(true); 
-                        console.log("Regreso de GrabaReservacion incorrecta, no existe reserva");
                     }
                 }
             }
@@ -172,7 +134,7 @@ const Reservaciones = () =>
     return(
         <Fragment>
             <div className="cuerpo">
-                <h2 className='h2Reserva'>Reservaciones</h2>
+                {/* <h2>Reservaciones</h2> */}
                 <form className="forma">   
                     <div className="captura">                  
                         <label className="etiquetas">* Fecha y Hora </label>
@@ -233,16 +195,12 @@ const Reservaciones = () =>
 }
 
 function GrabaReservacion(fecha, hora, numero, nombre, apPaterno, apMaterno, telefono, correo){
-    console.log("Entré a grabar la reservación");
-    console.log(fecha, hora, numero, nombre, apPaterno, apMaterno, telefono, correo);
     const mesa = "X";
     try{
         addDoc(collection(db, 'reservaciones'), { fecha, hora, numero, nombre, apPaterno, apMaterno, telefono, correo, mesa });
-        console.log("Salí de grabar la reservación, true");
         return true;
     }
     catch{
-        console.log("Salí de grabar la reservación, false");
         return false;
     }
 }
