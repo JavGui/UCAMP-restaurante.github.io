@@ -448,7 +448,6 @@ a{
     margin: auto;
     width: 400px;
     align-items: center;
-    padding: 0px;
 }
 
 .h2Reserva{
@@ -464,7 +463,7 @@ a{
 }
 
 .etiquetas{
-    padding-top: 25px;
+    /* padding-top: 25px; */
     font-weight: bold;
     color: grey;
 }
@@ -473,10 +472,11 @@ a{
     font-weight: bold;
     font-size: medium;
     color: blue;
+    height: 25px;
 }
 
 .botones{
-    padding-top: 25px;
+    padding-top: 10px;
     display: flex;
     align-items: center;
     justify-content: space-around;
@@ -501,7 +501,7 @@ a{
 }
 
 .mensaje{
-    padding-top: 25px;
+    padding-top: 10px;
     color: red;
     font-size: x-large;
     font-weight: bold;
@@ -562,7 +562,7 @@ li{
     font-family: sans-serif;
     text-align: center;
     color: white;
-    padding-top: 20px;
+    padding-top: 10px;
     padding-bottom: 10px;
     font-size: small;
 }
