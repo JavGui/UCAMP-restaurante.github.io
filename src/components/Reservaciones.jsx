@@ -187,7 +187,7 @@ const Reservaciones = () =>
 
                     {( correcta ) ? <p style={letraAzul} className="mensaje">Su reservación está confirmada para el día <u>{ fechaValida }</u> a las <u>{ horaValida }</u> a nombre de <u>{ nombre } { apPaterno } { apMaterno }</u></p> : <p> </p>}
 
-                    {( invalida ) ? <p className="mensaje">Ya existe una reservación para el día <u>{ fechaValida }</u> a las <u>{ horaValida }</u> por favor elija otra</p> : <p> </p>}
+                    {( invalida ) ? <p className="mensaje">Ya existe una reservación para el día <u>{ fechaValida }</u> a las <u>{ horaValida }</u> por favor elija otra+</p> : <p> </p>}
                     </div>
             </div>
         </Fragment>
